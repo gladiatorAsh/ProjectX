@@ -5809,6 +5809,20 @@ public final class Common {
      * <code>optional int64 file_size = 5;</code>
      */
     long getFileSize();
+
+    /**
+     * <code>optional string clientAddress = 6;</code>
+     */
+    boolean hasClientAddress();
+    /**
+     * <code>optional string clientAddress = 6;</code>
+     */
+    java.lang.String getClientAddress();
+    /**
+     * <code>optional string clientAddress = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getClientAddressBytes();
   }
   /**
    * Protobuf type {@code ReadBody}
@@ -5827,6 +5841,7 @@ public final class Common {
       chunkId_ = 0;
       chunkSize_ = 0;
       fileSize_ = 0L;
+      clientAddress_ = "";
     }
 
     @java.lang.Override
@@ -5882,6 +5897,12 @@ public final class Common {
             case 40: {
               bitField0_ |= 0x00000010;
               fileSize_ = input.readInt64();
+              break;
+            }
+            case 50: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000020;
+              clientAddress_ = bs;
               break;
             }
           }
@@ -6050,6 +6071,48 @@ public final class Common {
       return fileSize_;
     }
 
+    public static final int CLIENTADDRESS_FIELD_NUMBER = 6;
+    private volatile java.lang.Object clientAddress_;
+    /**
+     * <code>optional string clientAddress = 6;</code>
+     */
+    public boolean hasClientAddress() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string clientAddress = 6;</code>
+     */
+    public java.lang.String getClientAddress() {
+      java.lang.Object ref = clientAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          clientAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string clientAddress = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getClientAddressBytes() {
+      java.lang.Object ref = clientAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        clientAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -6077,6 +6140,9 @@ public final class Common {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeInt64(5, fileSize_);
       }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, clientAddress_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6102,6 +6168,9 @@ public final class Common {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(5, fileSize_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, clientAddress_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6145,6 +6214,11 @@ public final class Common {
         result = result && (getFileSize()
             == other.getFileSize());
       }
+      result = result && (hasClientAddress() == other.hasClientAddress());
+      if (hasClientAddress()) {
+        result = result && getClientAddress()
+            .equals(other.getClientAddress());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -6176,6 +6250,10 @@ public final class Common {
         hash = (37 * hash) + FILE_SIZE_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             getFileSize());
+      }
+      if (hasClientAddress()) {
+        hash = (37 * hash) + CLIENTADDRESS_FIELD_NUMBER;
+        hash = (53 * hash) + getClientAddress().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -6305,6 +6383,8 @@ public final class Common {
         bitField0_ = (bitField0_ & ~0x00000008);
         fileSize_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000010);
+        clientAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -6349,6 +6429,10 @@ public final class Common {
           to_bitField0_ |= 0x00000010;
         }
         result.fileSize_ = fileSize_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.clientAddress_ = clientAddress_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6409,6 +6493,11 @@ public final class Common {
         }
         if (other.hasFileSize()) {
           setFileSize(other.getFileSize());
+        }
+        if (other.hasClientAddress()) {
+          bitField0_ |= 0x00000020;
+          clientAddress_ = other.clientAddress_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -6706,6 +6795,82 @@ public final class Common {
       public Builder clearFileSize() {
         bitField0_ = (bitField0_ & ~0x00000010);
         fileSize_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object clientAddress_ = "";
+      /**
+       * <code>optional string clientAddress = 6;</code>
+       */
+      public boolean hasClientAddress() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string clientAddress = 6;</code>
+       */
+      public java.lang.String getClientAddress() {
+        java.lang.Object ref = clientAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            clientAddress_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string clientAddress = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getClientAddressBytes() {
+        java.lang.Object ref = clientAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          clientAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string clientAddress = 6;</code>
+       */
+      public Builder setClientAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        clientAddress_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string clientAddress = 6;</code>
+       */
+      public Builder clearClientAddress() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        clientAddress_ = getDefaultInstance().getClientAddress();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string clientAddress = 6;</code>
+       */
+      public Builder setClientAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        clientAddress_ = value;
         onChanged();
         return this;
       }
@@ -11280,29 +11445,30 @@ public final class Common {
       "file_size\030\006 \001(\003\"2\n\rWriteResponse\022\017\n\007Chun" +
       "kId\030\001 \003(\005\022\020\n\010filename\030\002 \001(\t\"A\n\005Chunk\022\020\n\010" +
       "chunk_id\030\001 \002(\005\022\022\n\nchunk_data\030\006 \002(\014\022\022\n\nch" +
-      "unk_size\030\t \001(\005\"f\n\010ReadBody\022\020\n\010filename\030\001" +
+      "unk_size\030\t \001(\005\"}\n\010ReadBody\022\020\n\010filename\030\001" +
       " \001(\t\022\017\n\007file_id\030\002 \001(\t\022\020\n\010chunk_id\030\003 \001(\005\022" +
-      "\022\n\nchunk_size\030\004 \001(\005\022\021\n\tfile_size\030\005 \001(\003\"\231" +
-      "\001\n\014ReadResponse\022\017\n\007file_id\030\001 \001(\t\022\020\n\010file" +
-      "name\030\002 \002(\t\022\020\n\010file_ext\030\003 \001(\t\022\025\n\rnum_of_c" +
-      "hunks\030\004 \001(\005\022&\n\016chunk_location\030\005 \003(\0132\016.Ch",
-      "unkLocation\022\025\n\005chunk\030\006 \001(\0132\006.Chunk\"I\n\rCh" +
-      "unkLocation\022\020\n\010chunk_id\030\001 \002(\005\022\022\n\nchunk_d" +
-      "ata\030\006 \002(\014\022\022\n\nchunk_size\030\t \001(\005\"3\n\004Node\022\017\n" +
-      "\007node_id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t\022\014\n\004port\030\003 \002" +
-      "(\005\"\303\002\n\010Response\022\037\n\014responseType\030\001 \002(\0162\t." +
-      "TaskType\022\020\n\010filename\030\003 \001(\t\022 \n\006status\030\n \001" +
-      "(\0162\020.Response.Status\022\'\n\rwriteResponse\030\004 " +
-      "\001(\0132\016.WriteResponseH\000\022%\n\014readResponse\030\005 " +
-      "\001(\0132\r.ReadResponseH\000\"\206\001\n\006Status\022\013\n\007SUCCE" +
-      "SS\020\001\022\021\n\rSERVERTIMEOUT\020\002\022\017\n\013REDIRECTION\020\003",
-      "\022\020\n\014FILENOTFOUND\020\004\022\014\n\010NOLEADER\020\005\022\017\n\013UNRE" +
-      "ACHABLE\020\006\022\017\n\013SERVICEDOWN\020\007\022\t\n\005ERROR\020\010B\t\n" +
-      "\007payload*\235\001\n\010TaskType\022\010\n\004PING\020\001\022\020\n\014PINGR" +
-      "ESPONSE\020\002\022\023\n\017REQUESTREADFILE\020\003\022\024\n\020REQUES" +
-      "TWRITEFILE\020\004\022\024\n\020RESPONSEREADFILE\020\005\022\025\n\021RE" +
-      "SPONSEWRITEFILE\020\006\022\035\n\031REQUESTREADALLFILED" +
-      "ETAILS\020\007B\017\n\013pipe.commonH\001"
+      "\022\n\nchunk_size\030\004 \001(\005\022\021\n\tfile_size\030\005 \001(\003\022\025" +
+      "\n\rclientAddress\030\006 \001(\t\"\231\001\n\014ReadResponse\022\017" +
+      "\n\007file_id\030\001 \001(\t\022\020\n\010filename\030\002 \002(\t\022\020\n\010fil" +
+      "e_ext\030\003 \001(\t\022\025\n\rnum_of_chunks\030\004 \001(\005\022&\n\016ch",
+      "unk_location\030\005 \003(\0132\016.ChunkLocation\022\025\n\005ch" +
+      "unk\030\006 \001(\0132\006.Chunk\"I\n\rChunkLocation\022\020\n\010ch" +
+      "unk_id\030\001 \002(\005\022\022\n\nchunk_data\030\006 \002(\014\022\022\n\nchun" +
+      "k_size\030\t \001(\005\"3\n\004Node\022\017\n\007node_id\030\001 \002(\005\022\014\n" +
+      "\004host\030\002 \002(\t\022\014\n\004port\030\003 \002(\005\"\303\002\n\010Response\022\037" +
+      "\n\014responseType\030\001 \002(\0162\t.TaskType\022\020\n\010filen" +
+      "ame\030\003 \001(\t\022 \n\006status\030\n \001(\0162\020.Response.Sta" +
+      "tus\022\'\n\rwriteResponse\030\004 \001(\0132\016.WriteRespon" +
+      "seH\000\022%\n\014readResponse\030\005 \001(\0132\r.ReadRespons" +
+      "eH\000\"\206\001\n\006Status\022\013\n\007SUCCESS\020\001\022\021\n\rSERVERTIM",
+      "EOUT\020\002\022\017\n\013REDIRECTION\020\003\022\020\n\014FILENOTFOUND\020" +
+      "\004\022\014\n\010NOLEADER\020\005\022\017\n\013UNREACHABLE\020\006\022\017\n\013SERV" +
+      "ICEDOWN\020\007\022\t\n\005ERROR\020\010B\t\n\007payload*\235\001\n\010Task" +
+      "Type\022\010\n\004PING\020\001\022\020\n\014PINGRESPONSE\020\002\022\023\n\017REQU" +
+      "ESTREADFILE\020\003\022\024\n\020REQUESTWRITEFILE\020\004\022\024\n\020R" +
+      "ESPONSEREADFILE\020\005\022\025\n\021RESPONSEWRITEFILE\020\006" +
+      "\022\035\n\031REQUESTREADALLFILEDETAILS\020\007B\017\n\013pipe." +
+      "commonH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11357,7 +11523,7 @@ public final class Common {
     internal_static_ReadBody_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ReadBody_descriptor,
-        new java.lang.String[] { "Filename", "FileId", "ChunkId", "ChunkSize", "FileSize", });
+        new java.lang.String[] { "Filename", "FileId", "ChunkId", "ChunkSize", "FileSize", "ClientAddress", });
     internal_static_ReadResponse_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_ReadResponse_fieldAccessorTable = new

@@ -124,6 +124,7 @@ message ReadBody{
     optional int32 chunk_id = 3;
     optional int32 chunk_size = 4;
     optional int64 file_size= 5;
+    optional string clientAddress=6;
 
 }
 
