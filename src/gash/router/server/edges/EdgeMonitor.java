@@ -27,6 +27,7 @@ import gash.router.client.CommConnection;
 import gash.router.container.RoutingConf.RoutingEntry;
 import gash.router.election.ElectionHandler;
 import gash.router.server.CommandInit;
+import gash.router.server.QueueHandler;
 import gash.router.server.ServerState;
 import gash.router.server.ServerState.State;
 import gash.router.server.WorkInit;
@@ -120,7 +121,27 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 
 		}
 	}
+	public static void sendToNode(WorkMessage msg,int nodeId){
+		for (EdgeInfo ei : outboundEdges.map.values()) {
+			if(ei.getRef()==nodeId){
+				Channel ch = ei.getChannel();
+				ChannelFuture cf = null;
+				if (ch != null) {
+					System.out.println("Sendind steal to "+nodeId);
+					//QueueHandler.enqueueInboundWorkAndChannel(msg, ch);
+					cf = ch.write(msg);
+					ch.flush();
+					if (cf.isDone() && !cf.isSuccess()) {
+						logger.info("failed to send vote to server");
 
+					}
+				} else {
+					ei.setActive(false);
+					activeOutboundEdges--;
+				}
+			}
+		}
+	}
 	public void broadcast(CommandMessage msg) {
 		for (EdgeInfo ei : this.outboundEdges.map.values()) {
 			Channel ch = ei.getChannel();
