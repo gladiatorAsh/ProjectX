@@ -5,6 +5,7 @@ public class Constants {
 	public static double sizeOfChunk = 1024 * 1024 * 1;
 	public static String dataDir = "C:\\Gossamer\\";
 	public static String clientDir = "C:\\ClientStuff\\";
+	public static String logFile = "Log.txt";
 
 	public static String jedis1 = "169.254.214.175";
 	public static String jedis2 = "169.254.56.202";

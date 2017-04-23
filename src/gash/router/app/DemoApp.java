@@ -95,8 +95,8 @@ public class DemoApp implements CommListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// String host = Constants.localhost;
-		String host = "169.254.80.87";
+		String host = Constants.localhost;
+		//String host = "169.254.80.87";
 		int port = Constants.workPort;
 
 		Boolean affirm = true;

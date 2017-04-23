@@ -362,9 +362,9 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 			File directory = new File(Constants.dataDir);
 			if (!directory.exists()) {
 				directory.mkdir();
-				// If you require it to make the entire directory path
-				// including parents,
-				// use directory.mkdirs(); here instead.
+				File logFile = new File(Constants.logFile);
+				logFile.createNewFile(); // Create log File
+
 			}
 
 			File file = new File(Constants.dataDir + msg.getReq().getRwb().getFilename());
