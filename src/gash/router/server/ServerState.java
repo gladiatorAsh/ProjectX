@@ -26,6 +26,25 @@ public class ServerState {
 	}
 
 	public static boolean roundTrip = false;
+	private static boolean stealReq=false;
+	private static int stealNode=0;
+	public static boolean isStealReq() {
+		return stealReq;
+	}
+
+	public static void setStealReq(boolean s) {
+		stealReq = s;
+	}
+
+	
+
+	public static int getStealNode() {
+		return stealNode;
+	}
+
+	public static void setStealNode(int stealNode) {
+		ServerState.stealNode = stealNode;
+	}
 
 	public static boolean isRoundTrip() {
 		return roundTrip;
