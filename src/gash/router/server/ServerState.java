@@ -25,24 +25,35 @@ public class ServerState {
 		Follower, Leader, Candidate;
 	}
 
-	public static Channel next=null;
- 	private static Jedis nextJedis = null;
- 	public static Channel getNext() {
- 		return next;
- 	}
- 
- 	public static void setNext(Channel next) {
- 		ServerState.next = next;
- 	}
- 
- 	public static Jedis getNextJedis() {
- 		return nextJedis;
- 	}
- 
- 	public static void setNextJedis(Jedis nextJedis) {
- 		ServerState.nextJedis = nextJedis;
- 	}
-	
+	public static boolean roundTrip = false;
+
+	public static boolean isRoundTrip() {
+		return roundTrip;
+	}
+
+	public static void setRoundTrip(boolean roundTrip) {
+		ServerState.roundTrip = roundTrip;
+	}
+
+	public static Channel next = null;
+	private static Jedis nextJedis = null;
+
+	public static Channel getNext() {
+		return next;
+	}
+
+	public static void setNext(Channel next) {
+		ServerState.next = next;
+	}
+
+	public static Jedis getNextJedis() {
+		return nextJedis;
+	}
+
+	public static void setNextJedis(Jedis nextJedis) {
+		ServerState.nextJedis = nextJedis;
+	}
+
 	private Handelable requestHandler;
 	private ElectionHandler elecHandler = new ElectionHandler(this);
 
@@ -81,14 +92,14 @@ public class ServerState {
 
 	public ServerState() throws UnknownHostException {
 		// ipAddress=LocalAddress.getLocalHostLANAddress().getHostAddress();
-		 ipAddress = LocalAddress.getLocalHostLANAddress().getHostAddress();
-		//ipAddress = "10.250.175.205";
+		ipAddress = LocalAddress.getLocalHostLANAddress().getHostAddress();
+		// ipAddress = "10.250.175.205";
 
 		System.out.println(LocalAddress.getLocalHostLANAddress().getHostAddress());
 		reqVote = new HandleVoteRequestState(this);
 		resLeader = new HandleLeaderResponseState(this);
 		voteReceived = new HandleVoteReceivedState(this);
-		nextJedis=new Jedis(Constants.next, Constants.redisPort);
+		nextJedis = new Jedis(Constants.next, Constants.redisPort);
 		jedisHandler1 = new Jedis(Constants.jedis1, Constants.redisPort);
 		jedisHandler2 = new Jedis(Constants.jedis2, Constants.redisPort);
 		jedisHandler3 = new Jedis(Constants.jedis3, Constants.redisPort);
@@ -346,7 +357,5 @@ public class ServerState {
 	public void setTasks(TaskList tasks) {
 		this.tasks = tasks;
 	}
-	
-	
 
 }

@@ -7,9 +7,9 @@ import pipe.common.Common.Header;
 import pipe.common.Common.ReadResponse;
 import pipe.common.Common.Request;
 import pipe.common.Common.Response;
+import pipe.common.Common.TaskType;
 import pipe.common.Common.WriteBody;
 import pipe.common.Common.WriteResponse;
-import pipe.common.Common.Response.ResponseType;
 import pipe.election.Election.LeaderStatus;
 import pipe.election.Election.LeaderStatus.LeaderState;
 import pipe.work.Work.WorkMessage;
@@ -27,18 +27,18 @@ public class WorkMessageCreator {
 		header.setDestination(-1);
 
 		Chunk.Builder chunk = Chunk.newBuilder();
-		chunk.setChunkId(msg.getReqMsg().getRwb().getChunk().getChunkId());
-		chunk.setChunkData(msg.getReqMsg().getRwb().getChunk().getChunkData());
+		chunk.setChunkId(msg.getReq().getRwb().getChunk().getChunkId());
+		chunk.setChunkData(msg.getReq().getRwb().getChunk().getChunkData());
 
 		WriteBody.Builder body = WriteBody.newBuilder();
-		body.setFilename(msg.getReqMsg().getRwb().getFilename());
+		body.setFilename(msg.getReq().getRwb().getFilename());
 		// File Id is the MD5 hash in string format of the file name
-		body.setFileId(msg.getReqMsg().getRwb().getFileId());
-		body.setNumOfChunks(msg.getReqMsg().getRwb().getNumOfChunks());
+		body.setFileId(msg.getReq().getRwb().getFileId());
+		body.setNumOfChunks(msg.getReq().getRwb().getNumOfChunks());
 		body.setChunk(chunk);
 
 		Request.Builder req = Request.newBuilder();
-		req.setRequestType(Request.RequestType.WRITEFILE);
+		req.setRequestType(TaskType.REQUESTWRITEFILE);
 		req.setRwb(body);
 
 		LeaderStatus.Builder status = LeaderStatus.newBuilder();
@@ -76,14 +76,15 @@ public class WorkMessageCreator {
 		// body.setResponseType(Response.ResponseType.READFILENAMES);
 
 		Response.Builder res = Response.newBuilder();
-		res.setResponseType(ResponseType.READFILENAMES);
+		// ToDO:Change Later
+		// res.setResponseType(TaskType.REQUESTREADFILE);
 
 		// req.setRwb(body);
 		// res.setFilename(fileName);
 		res.setReadResponse(body);
 		CommandMessage.Builder comm = CommandMessage.newBuilder();
 		comm.setHeader(header);
-		comm.setResMsg(res);
+		comm.setResp(res);
 		return comm.build();
 		// return fileName;
 	}
@@ -102,14 +103,14 @@ public class WorkMessageCreator {
 
 		Response.Builder res = Response.newBuilder();
 
-		// res.setResponseType(Response.ResponseType.WRITEFILE);
+		res.setResponseType(TaskType.RESPONSEWRITEFILE);
 		// req.setRwb(body);
 		res.setFilename(fileName);
 		res.setWriteResponse(body);
 
 		CommandMessage.Builder comm = CommandMessage.newBuilder();
 		comm.setHeader(header);
-		comm.setResMsg(res);
+		comm.setResp(res);
 		return comm.build();
 	}
 

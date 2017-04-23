@@ -16,6 +16,7 @@
 package gash.router.app;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import gash.router.client.CommConnection;
@@ -26,6 +27,17 @@ import global.Constants;
 import io.netty.channel.Channel;
 import redis.clients.jedis.Jedis;
 import routing.Pipe.CommandMessage;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import pipe.common.Common.Header;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.bootstrap.ServerBootstrap;
+import gash.router.server.CommandInit;
+import gash.router.client.CommInit;
+import java.util.HashMap;
 
 public class DemoApp implements CommListener {
 	private static MessageClient mc;
@@ -34,6 +46,7 @@ public class DemoApp implements CommListener {
 	static Jedis jedisHandler1 = new Jedis(Constants.jedis1, Constants.redisPort);
 	static Jedis jedisHandler2 = new Jedis(Constants.jedis2, Constants.redisPort);
 	static Jedis jedisHandler3 = new Jedis(Constants.jedis3, Constants.redisPort);
+	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
 
 	public Jedis getJedisHandler1() {
 		return jedisHandler1;
@@ -82,8 +95,8 @@ public class DemoApp implements CommListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//String host = Constants.localhost;
-		 String host = "169.254.80.87";
+		// String host = Constants.localhost;
+		String host = "169.254.80.87";
 		int port = Constants.workPort;
 
 		Boolean affirm = true;
@@ -221,6 +234,60 @@ public class DemoApp implements CommListener {
 	private static String runWriteTest() {
 		String path = "C:\\1\\Natrang.avi";
 		return path;
+	}
+
+	public static void clientAcceptConnections() {
+		EventLoopGroup bossGroup = new NioEventLoopGroup();
+		EventLoopGroup workerGroup = new NioEventLoopGroup();
+
+		try {
+			ServerBootstrap b = new ServerBootstrap();
+			bootstrap.put(4568, b);
+
+			b.group(bossGroup, workerGroup);
+			b.channel(NioServerSocketChannel.class);
+			b.option(ChannelOption.SO_BACKLOG, 100);
+			b.option(ChannelOption.TCP_NODELAY, true);
+			b.option(ChannelOption.SO_KEEPALIVE, true);
+			// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
+
+			boolean compressComm = false;
+			b.childHandler(new CommInit(false));
+
+			// Start the server.
+			System.out.println("Starting command server listening on port = " + 4568);
+			ChannelFuture f = b.bind(4568).syncUninterruptibly();
+
+			System.out.println(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
+					+ f.channel().isWritable() + ", act: " + f.channel().isActive());
+
+			// block until the server socket is closed.
+			f.channel().closeFuture().sync();
+
+		} catch (Exception ex) {
+			// on bind().sync()
+			System.out.println("Error on client side ");
+			ex.printStackTrace();
+		} finally {
+			// Shut down all event loops to terminate all threads.
+			bossGroup.shutdownGracefully();
+			workerGroup.shutdownGracefully();
+		}
+	}
+
+	private CommandMessage createCommandPing(int clusterId) {
+		// TODO Auto-generated method stub
+		CommandMessage.Builder command = CommandMessage.newBuilder();
+		Boolean ping = true;
+		command.setPing(ping);
+
+		Header.Builder header = Header.newBuilder();
+		header.setNodeId(2);
+		header.setTime(0);
+		header.setDestination(clusterId);
+		command.setHeader(header);
+
+		return command.build();
 	}
 
 	private static void sendFile(File file, Channel channel) {

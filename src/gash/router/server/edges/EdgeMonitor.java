@@ -30,6 +30,7 @@ import gash.router.server.CommandInit;
 import gash.router.server.ServerState;
 import gash.router.server.ServerState.State;
 import gash.router.server.WorkInit;
+import global.Constants;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -231,7 +232,7 @@ public class EdgeMonitor implements EdgeListener, Runnable {
 				System.out.println("Node:"+state.getConf().getNodeId()+" is the Leader!!");
 				try{
 					state.getLocalhostJedis().select(0);
-					state.getLocalhostJedis().set("2", state.getIpAddress()+":4568");
+					state.getLocalhostJedis().set(Constants.clusterId+"", state.getIpAddress()+":4568");
 					System.out.println("---Redis updated---");
 					
 				}catch(Exception e){
@@ -325,8 +326,8 @@ public class EdgeMonitor implements EdgeListener, Runnable {
  				EventLoopGroup workerGroup = new NioEventLoopGroup();
  
  		        try {
- 		        	String host=state.getLocalhostJedis().get(1+"").split(":")[0];
- 					int port=Integer.parseInt(state.getLocalhostJedis().get(1+"").split(":")[1]);
+ 		        	String host=state.getLocalhostJedis().get(Constants.nextClusterId+"").split(":")[0];
+ 					int port=Integer.parseInt(state.getLocalhostJedis().get(Constants.nextClusterId+"").split(":")[1]);
  		            Bootstrap b = new Bootstrap(); // (1)
  		            b.group(workerGroup); // (2)
  		            b.channel(NioSocketChannel.class); // (3)

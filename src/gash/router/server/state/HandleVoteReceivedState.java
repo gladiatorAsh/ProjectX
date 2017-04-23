@@ -2,6 +2,7 @@ package gash.router.server.state;
 
 import gash.router.election.ElectionHandler;
 import gash.router.server.ServerState;
+import global.Constants;
 import io.netty.channel.Channel;
 import pipe.work.Work.WorkMessage;
 
@@ -30,7 +31,7 @@ public class HandleVoteReceivedState implements Handelable {
 				state.getEmon().broadcast(response);
 				try {
 					state.getLocalhostJedis().select(0);
-					state.getLocalhostJedis().set("2", state.getIpAddress() + ":4568");
+					state.getLocalhostJedis().set(Constants.clusterId + "", state.getIpAddress() + ":4568");
 					System.out.println("---Redis updated---");
 
 				} catch (Exception e) {

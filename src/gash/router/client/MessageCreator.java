@@ -6,6 +6,7 @@ import pipe.common.Common.Chunk;
 import pipe.common.Common.Header;
 import pipe.common.Common.ReadBody;
 import pipe.common.Common.Request;
+import pipe.common.Common.TaskType;
 import pipe.common.Common.WriteBody;
 import routing.Pipe.CommandMessage;
 
@@ -22,12 +23,13 @@ public class MessageCreator {
 		body.setFilename("*");
 
 		Request.Builder req = Request.newBuilder();
-		req.setRequestType(Request.RequestType.READFILE);
+		// req.setRequestType(TaskType.REQUESTREADALLFILEDETAILS);
+		req.setRequestType(TaskType.REQUESTREADFILE);
 		req.setRrb(body);
 
 		CommandMessage.Builder comm = CommandMessage.newBuilder();
 		comm.setHeader(header);
-		comm.setReqMsg(req);
+		comm.setReq(req);
 		return comm.build();
 
 	}
@@ -43,12 +45,13 @@ public class MessageCreator {
 		body.setFilename(fileName);
 
 		Request.Builder req = Request.newBuilder();
-		req.setRequestType(Request.RequestType.READFILE);
+		// req.setRequestType(Request.RequestType.READFILE);
+		req.setRequestType(TaskType.REQUESTREADFILE);
 		req.setRrb(body);
 
 		CommandMessage.Builder comm = CommandMessage.newBuilder();
 		comm.setHeader(header);
-		comm.setReqMsg(req);
+		comm.setReq(req);
 		return comm.build();
 
 	}
@@ -72,17 +75,18 @@ public class MessageCreator {
 		body.setFilename(fileName);
 		// File Id is the MD5 hash in string format of the file name
 		body.setFileId(hash);
+		
 		body.setNumOfChunks(chunkCount);
 		body.setChunk(chunk);
-		body.setFileSize(filesize);
-
+		//body.setFileSize(filesize);
+		
 		Request.Builder req = Request.newBuilder();
-		req.setRequestType(Request.RequestType.WRITEFILE);
+		req.setRequestType(TaskType.REQUESTWRITEFILE);
 		req.setRwb(body);
 
 		CommandMessage.Builder comm = CommandMessage.newBuilder();
 		comm.setHeader(header);
-		comm.setReqMsg(req);
+		comm.setReq(req);
 		return comm.build();
 	}
 
