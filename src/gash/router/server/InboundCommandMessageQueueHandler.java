@@ -32,7 +32,7 @@ public class InboundCommandMessageQueueHandler implements Runnable{
 			Channel channel=cch.getChannel();
 			if(ServerState.isStealReq()){
 				//convert to command first
-				WorkMessage wmsg=convertStealToWork(channel.localAddress(),4568);
+				WorkMessage wmsg=convertStealToWork(channel.localAddress()+"",4568);
 				EdgeMonitor.sendToNode(wmsg, ServerState.getStealNode());
 				ServerState.setStealNode(0);
 				ServerState.setStealReq(false);
@@ -47,7 +47,7 @@ public class InboundCommandMessageQueueHandler implements Runnable{
 		}
 	}
 	
-	private WorkMessage convertStealToWork(SocketAddress localAddress, int i) {
+	private WorkMessage convertStealToWork(String localAddress, int i) {
 		// TODO Auto-generated method stub
 		return null;
 	}
