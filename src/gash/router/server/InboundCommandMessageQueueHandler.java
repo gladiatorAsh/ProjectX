@@ -39,7 +39,7 @@ public class InboundCommandMessageQueueHandler implements Runnable {
 			Channel channel = cch.getChannel();
 			if (ServerState.isStealReq() && msg.getReq().getRequestType() == TaskType.REQUESTREADFILE) {
 				// convert to command first
-				WorkMessage wmsg = convertStealToWork(msg, channel.localAddress() + "", Constants.clientPort);
+				WorkMessage wmsg = convertStealToWork(msg);
 				EdgeMonitor.sendToNode(wmsg, ServerState.getStealNode());
 				ServerState.setStealNode(0);
 				ServerState.setStealReq(false);
@@ -54,7 +54,7 @@ public class InboundCommandMessageQueueHandler implements Runnable {
 		}
 	}
 
-	private WorkMessage convertStealToWork(CommandMessage msg, String localAddress, int port) {
+	private WorkMessage convertStealToWork(CommandMessage msg) {
 		// TODO Auto-generated method stub
 
 		Header.Builder header = Header.newBuilder();
@@ -63,7 +63,7 @@ public class InboundCommandMessageQueueHandler implements Runnable {
 		header.setDestination(-1);
 
 		ReadBody.Builder body = ReadBody.newBuilder();
-		body.setClientAddress(localAddress + ":" + port);
+		body.setClientAddress(msg.getReq().getRrb().getClientAddress());
 
 		LeaderStatus.Builder leaderStatus = LeaderStatus.newBuilder();
 		leaderStatus.setState(LeaderState.LEADERKNOWN);

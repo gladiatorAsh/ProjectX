@@ -3,6 +3,7 @@ package gash.router.client;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +20,7 @@ import routing.Pipe.CommandMessage;
 public class MessageSender {
 	static Channel channel = CommConnection.getInstance().connect();
 
-	public static void SendReadRequest(String fileName) {
+	public static void SendReadRequest(String fileName) throws UnknownHostException {
 		// TODO Auto-generated method stub
 		CommandMessage msg = MessageCreator.createReadMessage(fileName);
 		channel.writeAndFlush(msg);

@@ -1,7 +1,11 @@
 package gash.router.client;
 
+import java.net.UnknownHostException;
+
 import com.google.protobuf.ByteString;
 
+import discovery.LocalAddress;
+import global.Constants;
 import pipe.common.Common.Chunk;
 import pipe.common.Common.Header;
 import pipe.common.Common.ReadBody;
@@ -34,7 +38,7 @@ public class MessageCreator {
 
 	}
 
-	public static CommandMessage createReadMessage(String fileName) {
+	public static CommandMessage createReadMessage(String fileName) throws UnknownHostException {
 		// TODO Auto-generated method stub
 		Header.Builder header = Header.newBuilder();
 		header.setNodeId(99);
@@ -43,7 +47,7 @@ public class MessageCreator {
 
 		ReadBody.Builder body = ReadBody.newBuilder();
 		body.setFilename(fileName);
-
+		body.setClientAddress(LocalAddress.getLocalHostLANAddress().getHostAddress()+":"+Constants.clientPort);
 		Request.Builder req = Request.newBuilder();
 		// req.setRequestType(Request.RequestType.READFILE);
 		req.setRequestType(TaskType.REQUESTREADFILE);
