@@ -269,12 +269,12 @@ public class DemoApp implements CommListener {
 		Header.Builder header = Header.newBuilder();
 		header.setNodeId(2);
 		header.setTime(System.currentTimeMillis());
-		header.setDestination(clusterId);
+		header.setDestination(Constants.whomToConnect);
 		command.setHeader(header);
 
 		return command.build();
 	}
-
+	
 	private static void sendFile(File file, Channel channel) {
 		// TODO Auto-generated method stub
 

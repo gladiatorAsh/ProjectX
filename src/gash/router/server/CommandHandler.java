@@ -104,13 +104,13 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		}else if (msg.getPing()) {
 			// System.out.println("Received ping from cluster 1");
 			if (!ServerState.isRoundTrip() && msg.getHeader().getDestination() == Constants.clusterId) {
-
 				ServerState.setRoundTrip(true);
 				CommandMessage ping = createCommandPing(msg.getHeader().getDestination());
 				ServerState.getNext().writeAndFlush(ping);
 			} else if (ServerState.isRoundTrip() && msg.getHeader().getDestination() == Constants.clusterId) {
 				ServerState.setRoundTrip(false);
 				System.out.println("***Got the ping back by going through the ring across all clusters***");
+				channel.writeAndFlush(msg);
 			} else {
 				CommandMessage ping = createCommandPing(msg.getHeader().getDestination());
 				ServerState.getNext().writeAndFlush(ping);
