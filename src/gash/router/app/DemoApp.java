@@ -141,8 +141,9 @@ public class DemoApp implements CommListener {
 
 				System.out.println("[1] Write - Write a file to the cluster");
 				System.out.println("[2] Read  - Read file from cluster");
-				System.out.println("[3] Fetch - Fetch File Names stored in cluster");
+				System.out.println("[3] Fetch Names - Fetch File Names stored in cluster");
 				System.out.println("[4] Ping - Ping to cluster");
+				System.out.println("[5] Read Multiple - Read Multiple files from cluster");
 				System.out.println("[0] Exit  - Exit cluster");
 
 				try {
@@ -230,6 +231,14 @@ public class DemoApp implements CommListener {
 					MessageSender.SendReadRequest(fileName);
 					break;
 				case 4:
+					break;
+				case 5:
+					System.out.println("Please enter names of file to fetch seperated by comma");
+					String fileNames = reader.nextLine();
+					String[] fileArray = fileNames.split(",");
+					for (String fileName1 : fileArray) {
+						MessageSender.SendReadRequest(fileName1);
+					}
 					break;
 				default:
 					break;
