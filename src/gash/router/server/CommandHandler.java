@@ -200,7 +200,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 
 		Header.Builder header = Header.newBuilder();
 		header.setNodeId(2);
-		header.setTime(0);
+		header.setTime(System.currentTimeMillis());
 		header.setDestination(clusterId);
 		command.setHeader(header);
 

@@ -77,7 +77,13 @@ public class MessageSender {
 			System.out.print(start);
 			System.out.println("Start send");
 
-			List<Future<Long>> futures = service.invokeAll(CommConnection.getInstance().outboundWriteQueue);
+			try {
+				List<Future<Long>> futures = service.invokeAll(CommConnection.getInstance().outboundWriteQueue);
+			} catch (NullPointerException e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+
+			}
 			System.out.println("Completed tasks");
 			service.shutdown();
 

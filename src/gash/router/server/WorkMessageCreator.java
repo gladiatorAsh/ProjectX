@@ -2,6 +2,8 @@ package gash.router.server;
 
 import java.util.ArrayList;
 
+import com.mysql.fabric.Server;
+
 import pipe.common.Common.Chunk;
 import pipe.common.Common.Header;
 import pipe.common.Common.ReadResponse;
@@ -21,8 +23,8 @@ public class WorkMessageCreator {
 		// TODO Auto-generated method stub
 
 		Header.Builder header = Header.newBuilder();
-		// ToDO: set correct nodeId
-		header.setNodeId(99);
+
+		header.setNodeId(ServerState.getConf().getNodeId());
 		header.setTime(System.currentTimeMillis());
 		header.setDestination(-1);
 
@@ -57,7 +59,7 @@ public class WorkMessageCreator {
 		// TODO Auto-generated method stub
 		Header.Builder header = Header.newBuilder();
 		// ToDO: Set actual Node Id and hash as well
-		header.setNodeId(99);
+		header.setNodeId(ServerState.getConf().getNodeId());
 		header.setTime(System.currentTimeMillis());
 		header.setDestination(-1);
 		ReadResponse.Builder body = ReadResponse.newBuilder();
@@ -94,7 +96,7 @@ public class WorkMessageCreator {
 		Header.Builder header = Header.newBuilder();
 		// ToDO: Set actual Node Id and hash as well
 
-		header.setNodeId(99);
+		header.setNodeId(ServerState.getConf().getNodeId());
 		header.setTime(System.currentTimeMillis());
 		header.setDestination(-1);
 
