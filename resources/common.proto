@@ -22,6 +22,7 @@ message Header {
    required int32 node_id = 2;
    required int64 time = 3; 
    optional bool election=4;
+   optional bool steal=5;
    
    // if the message is for a specific node, this will be set
    optional int32 destination = 8;

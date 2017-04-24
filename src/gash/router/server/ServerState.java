@@ -134,6 +134,8 @@ public class ServerState {
 		new Thread(new InboundWorkMessageQueueHandler()).start();
 		new Thread(new OutboundCommandMessageQueueHandler()).start();
 		new Thread(new OutboundWorkMessageQueueHandler()).start();
+		new Thread(new WorkStealHandler(this)).start();
+
 	}
 
 	public void setRedis() {

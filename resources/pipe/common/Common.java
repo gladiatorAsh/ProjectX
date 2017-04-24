@@ -200,6 +200,15 @@ public final class Common {
     boolean getElection();
 
     /**
+     * <code>optional bool steal = 5;</code>
+     */
+    boolean hasSteal();
+    /**
+     * <code>optional bool steal = 5;</code>
+     */
+    boolean getSteal();
+
+    /**
      * <pre>
      * if the message is for a specific node, this will be set
      * </pre>
@@ -251,6 +260,7 @@ public final class Common {
       nodeId_ = 0;
       time_ = 0L;
       election_ = false;
+      steal_ = false;
       destination_ = 0;
       maxHops_ = -1;
     }
@@ -303,13 +313,18 @@ public final class Common {
               election_ = input.readBool();
               break;
             }
-            case 64: {
+            case 40: {
               bitField0_ |= 0x00000010;
+              steal_ = input.readBool();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000020;
               destination_ = input.readInt32();
               break;
             }
             case 80: {
-              bitField0_ |= 0x00000020;
+              bitField0_ |= 0x00000040;
               maxHops_ = input.readInt32();
               break;
             }
@@ -408,6 +423,21 @@ public final class Common {
       return election_;
     }
 
+    public static final int STEAL_FIELD_NUMBER = 5;
+    private boolean steal_;
+    /**
+     * <code>optional bool steal = 5;</code>
+     */
+    public boolean hasSteal() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional bool steal = 5;</code>
+     */
+    public boolean getSteal() {
+      return steal_;
+    }
+
     public static final int DESTINATION_FIELD_NUMBER = 8;
     private int destination_;
     /**
@@ -418,7 +448,7 @@ public final class Common {
      * <code>optional int32 destination = 8;</code>
      */
     public boolean hasDestination() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
      * <pre>
@@ -442,7 +472,7 @@ public final class Common {
      * <code>optional int32 max_hops = 10 [default = -1];</code>
      */
     public boolean hasMaxHops() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
      * <pre>
@@ -489,9 +519,12 @@ public final class Common {
         output.writeBool(4, election_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(8, destination_);
+        output.writeBool(5, steal_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt32(8, destination_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt32(10, maxHops_);
       }
       unknownFields.writeTo(output);
@@ -520,9 +553,13 @@ public final class Common {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(8, destination_);
+          .computeBoolSize(5, steal_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(8, destination_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(10, maxHops_);
       }
@@ -563,6 +600,11 @@ public final class Common {
         result = result && (getElection()
             == other.getElection());
       }
+      result = result && (hasSteal() == other.hasSteal());
+      if (hasSteal()) {
+        result = result && (getSteal()
+            == other.getSteal());
+      }
       result = result && (hasDestination() == other.hasDestination());
       if (hasDestination()) {
         result = result && (getDestination()
@@ -601,6 +643,11 @@ public final class Common {
         hash = (37 * hash) + ELECTION_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getElection());
+      }
+      if (hasSteal()) {
+        hash = (37 * hash) + STEAL_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getSteal());
       }
       if (hasDestination()) {
         hash = (37 * hash) + DESTINATION_FIELD_NUMBER;
@@ -736,10 +783,12 @@ public final class Common {
         bitField0_ = (bitField0_ & ~0x00000004);
         election_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
-        destination_ = 0;
+        steal_ = false;
         bitField0_ = (bitField0_ & ~0x00000010);
-        maxHops_ = -1;
+        destination_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
+        maxHops_ = -1;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -783,9 +832,13 @@ public final class Common {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.destination_ = destination_;
+        result.steal_ = steal_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
+        }
+        result.destination_ = destination_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
         }
         result.maxHops_ = maxHops_;
         result.bitField0_ = to_bitField0_;
@@ -841,6 +894,9 @@ public final class Common {
         }
         if (other.hasElection()) {
           setElection(other.getElection());
+        }
+        if (other.hasSteal()) {
+          setSteal(other.getSteal());
         }
         if (other.hasDestination()) {
           setDestination(other.getDestination());
@@ -1030,6 +1086,38 @@ public final class Common {
         return this;
       }
 
+      private boolean steal_ ;
+      /**
+       * <code>optional bool steal = 5;</code>
+       */
+      public boolean hasSteal() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool steal = 5;</code>
+       */
+      public boolean getSteal() {
+        return steal_;
+      }
+      /**
+       * <code>optional bool steal = 5;</code>
+       */
+      public Builder setSteal(boolean value) {
+        bitField0_ |= 0x00000010;
+        steal_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool steal = 5;</code>
+       */
+      public Builder clearSteal() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        steal_ = false;
+        onChanged();
+        return this;
+      }
+
       private int destination_ ;
       /**
        * <pre>
@@ -1039,7 +1127,7 @@ public final class Common {
        * <code>optional int32 destination = 8;</code>
        */
       public boolean hasDestination() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
        * <pre>
@@ -1059,7 +1147,7 @@ public final class Common {
        * <code>optional int32 destination = 8;</code>
        */
       public Builder setDestination(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         destination_ = value;
         onChanged();
         return this;
@@ -1072,7 +1160,7 @@ public final class Common {
        * <code>optional int32 destination = 8;</code>
        */
       public Builder clearDestination() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         destination_ = 0;
         onChanged();
         return this;
@@ -1088,7 +1176,7 @@ public final class Common {
        * <code>optional int32 max_hops = 10 [default = -1];</code>
        */
       public boolean hasMaxHops() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
        * <pre>
@@ -1110,7 +1198,7 @@ public final class Common {
        * <code>optional int32 max_hops = 10 [default = -1];</code>
        */
       public Builder setMaxHops(int value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         maxHops_ = value;
         onChanged();
         return this;
@@ -1124,7 +1212,7 @@ public final class Common {
        * <code>optional int32 max_hops = 10 [default = -1];</code>
        */
       public Builder clearMaxHops() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         maxHops_ = -1;
         onChanged();
         return this;
@@ -11431,44 +11519,44 @@ public final class Common {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\014common.proto\"x\n\006Header\022\022\n\nmessage_id\030\001" +
-      " \001(\005\022\017\n\007node_id\030\002 \002(\005\022\014\n\004time\030\003 \002(\003\022\020\n\010e" +
-      "lection\030\004 \001(\010\022\023\n\013destination\030\010 \001(\005\022\024\n\010ma" +
-      "x_hops\030\n \001(\005:\002-1\"6\n\007Failure\022\n\n\002id\030\001 \002(\005\022" +
-      "\016\n\006ref_id\030\002 \001(\005\022\017\n\007message\030\003 \001(\t\"\200\001\n\007Req" +
-      "uest\022\025\n\006client\030\001 \001(\0132\005.Node\022\036\n\013requestTy" +
-      "pe\030\003 \002(\0162\t.TaskType\022\031\n\003rwb\030\004 \001(\0132\n.Write" +
-      "BodyH\000\022\030\n\003rrb\030\005 \001(\0132\t.ReadBodyH\000B\t\n\007payl" +
-      "oad\"\201\001\n\tWriteBody\022\017\n\007file_id\030\001 \001(\t\022\020\n\010fi" +
-      "lename\030\002 \002(\t\022\020\n\010file_ext\030\003 \001(\t\022\025\n\005chunk\030",
-      "\004 \001(\0132\006.Chunk\022\025\n\rnum_of_chunks\030\005 \001(\005\022\021\n\t" +
-      "file_size\030\006 \001(\003\"2\n\rWriteResponse\022\017\n\007Chun" +
-      "kId\030\001 \003(\005\022\020\n\010filename\030\002 \001(\t\"A\n\005Chunk\022\020\n\010" +
-      "chunk_id\030\001 \002(\005\022\022\n\nchunk_data\030\006 \002(\014\022\022\n\nch" +
-      "unk_size\030\t \001(\005\"}\n\010ReadBody\022\020\n\010filename\030\001" +
-      " \001(\t\022\017\n\007file_id\030\002 \001(\t\022\020\n\010chunk_id\030\003 \001(\005\022" +
-      "\022\n\nchunk_size\030\004 \001(\005\022\021\n\tfile_size\030\005 \001(\003\022\025" +
-      "\n\rclientAddress\030\006 \001(\t\"\231\001\n\014ReadResponse\022\017" +
-      "\n\007file_id\030\001 \001(\t\022\020\n\010filename\030\002 \002(\t\022\020\n\010fil" +
-      "e_ext\030\003 \001(\t\022\025\n\rnum_of_chunks\030\004 \001(\005\022&\n\016ch",
-      "unk_location\030\005 \003(\0132\016.ChunkLocation\022\025\n\005ch" +
-      "unk\030\006 \001(\0132\006.Chunk\"I\n\rChunkLocation\022\020\n\010ch" +
-      "unk_id\030\001 \002(\005\022\022\n\nchunk_data\030\006 \002(\014\022\022\n\nchun" +
-      "k_size\030\t \001(\005\"3\n\004Node\022\017\n\007node_id\030\001 \002(\005\022\014\n" +
-      "\004host\030\002 \002(\t\022\014\n\004port\030\003 \002(\005\"\303\002\n\010Response\022\037" +
-      "\n\014responseType\030\001 \002(\0162\t.TaskType\022\020\n\010filen" +
-      "ame\030\003 \001(\t\022 \n\006status\030\n \001(\0162\020.Response.Sta" +
-      "tus\022\'\n\rwriteResponse\030\004 \001(\0132\016.WriteRespon" +
-      "seH\000\022%\n\014readResponse\030\005 \001(\0132\r.ReadRespons" +
-      "eH\000\"\206\001\n\006Status\022\013\n\007SUCCESS\020\001\022\021\n\rSERVERTIM",
-      "EOUT\020\002\022\017\n\013REDIRECTION\020\003\022\020\n\014FILENOTFOUND\020" +
-      "\004\022\014\n\010NOLEADER\020\005\022\017\n\013UNREACHABLE\020\006\022\017\n\013SERV" +
-      "ICEDOWN\020\007\022\t\n\005ERROR\020\010B\t\n\007payload*\235\001\n\010Task" +
-      "Type\022\010\n\004PING\020\001\022\020\n\014PINGRESPONSE\020\002\022\023\n\017REQU" +
-      "ESTREADFILE\020\003\022\024\n\020REQUESTWRITEFILE\020\004\022\024\n\020R" +
-      "ESPONSEREADFILE\020\005\022\025\n\021RESPONSEWRITEFILE\020\006" +
-      "\022\035\n\031REQUESTREADALLFILEDETAILS\020\007B\017\n\013pipe." +
-      "commonH\001"
+      "\n\014common.proto\"\207\001\n\006Header\022\022\n\nmessage_id\030" +
+      "\001 \001(\005\022\017\n\007node_id\030\002 \002(\005\022\014\n\004time\030\003 \002(\003\022\020\n\010" +
+      "election\030\004 \001(\010\022\r\n\005steal\030\005 \001(\010\022\023\n\013destina" +
+      "tion\030\010 \001(\005\022\024\n\010max_hops\030\n \001(\005:\002-1\"6\n\007Fail" +
+      "ure\022\n\n\002id\030\001 \002(\005\022\016\n\006ref_id\030\002 \001(\005\022\017\n\007messa" +
+      "ge\030\003 \001(\t\"\200\001\n\007Request\022\025\n\006client\030\001 \001(\0132\005.N" +
+      "ode\022\036\n\013requestType\030\003 \002(\0162\t.TaskType\022\031\n\003r" +
+      "wb\030\004 \001(\0132\n.WriteBodyH\000\022\030\n\003rrb\030\005 \001(\0132\t.Re" +
+      "adBodyH\000B\t\n\007payload\"\201\001\n\tWriteBody\022\017\n\007fil" +
+      "e_id\030\001 \001(\t\022\020\n\010filename\030\002 \002(\t\022\020\n\010file_ext",
+      "\030\003 \001(\t\022\025\n\005chunk\030\004 \001(\0132\006.Chunk\022\025\n\rnum_of_" +
+      "chunks\030\005 \001(\005\022\021\n\tfile_size\030\006 \001(\003\"2\n\rWrite" +
+      "Response\022\017\n\007ChunkId\030\001 \003(\005\022\020\n\010filename\030\002 " +
+      "\001(\t\"A\n\005Chunk\022\020\n\010chunk_id\030\001 \002(\005\022\022\n\nchunk_" +
+      "data\030\006 \002(\014\022\022\n\nchunk_size\030\t \001(\005\"}\n\010ReadBo" +
+      "dy\022\020\n\010filename\030\001 \001(\t\022\017\n\007file_id\030\002 \001(\t\022\020\n" +
+      "\010chunk_id\030\003 \001(\005\022\022\n\nchunk_size\030\004 \001(\005\022\021\n\tf" +
+      "ile_size\030\005 \001(\003\022\025\n\rclientAddress\030\006 \001(\t\"\231\001" +
+      "\n\014ReadResponse\022\017\n\007file_id\030\001 \001(\t\022\020\n\010filen" +
+      "ame\030\002 \002(\t\022\020\n\010file_ext\030\003 \001(\t\022\025\n\rnum_of_ch",
+      "unks\030\004 \001(\005\022&\n\016chunk_location\030\005 \003(\0132\016.Chu" +
+      "nkLocation\022\025\n\005chunk\030\006 \001(\0132\006.Chunk\"I\n\rChu" +
+      "nkLocation\022\020\n\010chunk_id\030\001 \002(\005\022\022\n\nchunk_da" +
+      "ta\030\006 \002(\014\022\022\n\nchunk_size\030\t \001(\005\"3\n\004Node\022\017\n\007" +
+      "node_id\030\001 \002(\005\022\014\n\004host\030\002 \002(\t\022\014\n\004port\030\003 \002(" +
+      "\005\"\303\002\n\010Response\022\037\n\014responseType\030\001 \002(\0162\t.T" +
+      "askType\022\020\n\010filename\030\003 \001(\t\022 \n\006status\030\n \001(" +
+      "\0162\020.Response.Status\022\'\n\rwriteResponse\030\004 \001" +
+      "(\0132\016.WriteResponseH\000\022%\n\014readResponse\030\005 \001" +
+      "(\0132\r.ReadResponseH\000\"\206\001\n\006Status\022\013\n\007SUCCES",
+      "S\020\001\022\021\n\rSERVERTIMEOUT\020\002\022\017\n\013REDIRECTION\020\003\022" +
+      "\020\n\014FILENOTFOUND\020\004\022\014\n\010NOLEADER\020\005\022\017\n\013UNREA" +
+      "CHABLE\020\006\022\017\n\013SERVICEDOWN\020\007\022\t\n\005ERROR\020\010B\t\n\007" +
+      "payload*\235\001\n\010TaskType\022\010\n\004PING\020\001\022\020\n\014PINGRE" +
+      "SPONSE\020\002\022\023\n\017REQUESTREADFILE\020\003\022\024\n\020REQUEST" +
+      "WRITEFILE\020\004\022\024\n\020RESPONSEREADFILE\020\005\022\025\n\021RES" +
+      "PONSEWRITEFILE\020\006\022\035\n\031REQUESTREADALLFILEDE" +
+      "TAILS\020\007B\017\n\013pipe.commonH\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -11487,7 +11575,7 @@ public final class Common {
     internal_static_Header_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Header_descriptor,
-        new java.lang.String[] { "MessageId", "NodeId", "Time", "Election", "Destination", "MaxHops", });
+        new java.lang.String[] { "MessageId", "NodeId", "Time", "Election", "Steal", "Destination", "MaxHops", });
     internal_static_Failure_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_Failure_fieldAccessorTable = new

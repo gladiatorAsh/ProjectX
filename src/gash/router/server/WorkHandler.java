@@ -92,7 +92,10 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 			System.out.println("ERROR: Unexpected content  - " + msg);
 			return;
 		}
-
+		if(msg.getHeader().hasSteal()){
+			state.setStealNode(msg.getHeader().getNodeId());
+			state.setStealReq(true);
+		}
 		if (msg.getReq().getRequestType() == TaskType.REQUESTREADFILE) {
 			QueueHandler.enqueueInboundWorkAndChannel(msg,channel);
 		}else if (msg.getReq().getRequestType() == TaskType.REQUESTWRITEFILE) {
