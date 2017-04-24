@@ -142,6 +142,7 @@ public class DemoApp implements CommListener {
 				System.out.println("[1] Write - Write a file to the cluster");
 				System.out.println("[2] Read  - Read file from cluster");
 				System.out.println("[3] Fetch - Fetch File Names stored in cluster");
+				System.out.println("[4] Ping - Ping to cluster");
 				System.out.println("[0] Exit  - Exit cluster");
 
 				try {
@@ -228,6 +229,8 @@ public class DemoApp implements CommListener {
 					String fileName = reader.nextLine();
 					MessageSender.SendReadRequest(fileName);
 					break;
+				case 4:
+					break;
 				default:
 					break;
 				}
@@ -254,7 +257,7 @@ public class DemoApp implements CommListener {
 	}
 
 	public static void clientAcceptConnections() {
-		
+
 	}
 
 	private CommandMessage createCommandPing(int clusterId) {
