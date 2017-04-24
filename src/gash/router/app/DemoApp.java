@@ -46,7 +46,6 @@ public class DemoApp implements CommListener {
 	static Jedis jedisHandler1 = new Jedis(Constants.jedis1, Constants.redisPort);
 	static Jedis jedisHandler2 = new Jedis(Constants.jedis2, Constants.redisPort);
 	static Jedis jedisHandler3 = new Jedis(Constants.jedis3, Constants.redisPort);
-	protected static HashMap<Integer, ServerBootstrap> bootstrap = new HashMap<Integer, ServerBootstrap>();
 
 	public Jedis getJedisHandler1() {
 		return jedisHandler1;
@@ -131,7 +130,7 @@ public class DemoApp implements CommListener {
 			} catch (Exception e) {
 				System.out.println("Connection to redis failed at 169.254.80.87:4567");
 			}
-
+			new Thread(new ClientAsServer()).start();
 			MessageClient msgClient = new MessageClient(host, port);
 			DemoApp app = new DemoApp(msgClient);
 
@@ -255,42 +254,7 @@ public class DemoApp implements CommListener {
 	}
 
 	public static void clientAcceptConnections() {
-		EventLoopGroup bossGroup = new NioEventLoopGroup();
-		EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-		try {
-			ServerBootstrap b = new ServerBootstrap();
-			bootstrap.put(4568, b);
-
-			b.group(bossGroup, workerGroup);
-			b.channel(NioServerSocketChannel.class);
-			b.option(ChannelOption.SO_BACKLOG, 100);
-			b.option(ChannelOption.TCP_NODELAY, true);
-			b.option(ChannelOption.SO_KEEPALIVE, true);
-			// b.option(ChannelOption.MESSAGE_SIZE_ESTIMATOR);
-
-			boolean compressComm = false;
-			b.childHandler(new CommInit(false));
-
-			// Start the server.
-			System.out.println("Starting command server listening on port = " + 4568);
-			ChannelFuture f = b.bind(Constants.clientPort).syncUninterruptibly();
-
-			System.out.println(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
-					+ f.channel().isWritable() + ", act: " + f.channel().isActive());
-
-			// block until the server socket is closed.
-			f.channel().closeFuture().sync();
-
-		} catch (Exception ex) {
-			// on bind().sync()
-			System.out.println("Error on client side ");
-			ex.printStackTrace();
-		} finally {
-			// Shut down all event loops to terminate all threads.
-			bossGroup.shutdownGracefully();
-			workerGroup.shutdownGracefully();
-		}
+		
 	}
 
 	private CommandMessage createCommandPing(int clusterId) {
