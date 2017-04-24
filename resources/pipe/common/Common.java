@@ -182,11 +182,11 @@ public final class Common {
     int getNodeId();
 
     /**
-     * <code>required int64 time = 3;</code>
+     * <code>optional int64 time = 3;</code>
      */
     boolean hasTime();
     /**
-     * <code>required int64 time = 3;</code>
+     * <code>optional int64 time = 3;</code>
      */
     long getTime();
 
@@ -396,13 +396,13 @@ public final class Common {
     public static final int TIME_FIELD_NUMBER = 3;
     private long time_;
     /**
-     * <code>required int64 time = 3;</code>
+     * <code>optional int64 time = 3;</code>
      */
     public boolean hasTime() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required int64 time = 3;</code>
+     * <code>optional int64 time = 3;</code>
      */
     public long getTime() {
       return time_;
@@ -493,10 +493,6 @@ public final class Common {
       if (isInitialized == 0) return false;
 
       if (!hasNodeId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasTime()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -913,9 +909,6 @@ public final class Common {
         if (!hasNodeId()) {
           return false;
         }
-        if (!hasTime()) {
-          return false;
-        }
         return true;
       }
 
@@ -1024,19 +1017,19 @@ public final class Common {
 
       private long time_ ;
       /**
-       * <code>required int64 time = 3;</code>
+       * <code>optional int64 time = 3;</code>
        */
       public boolean hasTime() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required int64 time = 3;</code>
+       * <code>optional int64 time = 3;</code>
        */
       public long getTime() {
         return time_;
       }
       /**
-       * <code>required int64 time = 3;</code>
+       * <code>optional int64 time = 3;</code>
        */
       public Builder setTime(long value) {
         bitField0_ |= 0x00000004;
@@ -1045,7 +1038,7 @@ public final class Common {
         return this;
       }
       /**
-       * <code>required int64 time = 3;</code>
+       * <code>optional int64 time = 3;</code>
        */
       public Builder clearTime() {
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -11520,7 +11513,7 @@ public final class Common {
   static {
     java.lang.String[] descriptorData = {
       "\n\014common.proto\"\207\001\n\006Header\022\022\n\nmessage_id\030" +
-      "\001 \001(\005\022\017\n\007node_id\030\002 \002(\005\022\014\n\004time\030\003 \002(\003\022\020\n\010" +
+      "\001 \001(\005\022\017\n\007node_id\030\002 \002(\005\022\014\n\004time\030\003 \001(\003\022\020\n\010" +
       "election\030\004 \001(\010\022\r\n\005steal\030\005 \001(\010\022\023\n\013destina" +
       "tion\030\010 \001(\005\022\024\n\010max_hops\030\n \001(\005:\002-1\"6\n\007Fail" +
       "ure\022\n\n\002id\030\001 \002(\005\022\016\n\006ref_id\030\002 \001(\005\022\017\n\007messa" +

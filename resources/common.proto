@@ -20,7 +20,7 @@ message Header {
    // in addition with node_id, it will remain unique every time.
    optional int32 message_id = 1;  //New field Added
    required int32 node_id = 2;
-   required int64 time = 3; 
+   optional int64 time = 3; 
    optional bool election=4;
    optional bool steal=5;
    
