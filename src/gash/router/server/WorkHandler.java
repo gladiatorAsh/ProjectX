@@ -94,10 +94,8 @@ public class WorkHandler extends SimpleChannelInboundHandler<WorkMessage> {
 		}
 
 		if (msg.getReq().getRequestType() == TaskType.REQUESTREADFILE) {
-			// QueueHandler.enqueueInboundWorkAndChannel(msg,channel);
-		}
-
-		if (msg.getReq().getRequestType() == TaskType.REQUESTWRITEFILE) {
+			QueueHandler.enqueueInboundWorkAndChannel(msg,channel);
+		}else if (msg.getReq().getRequestType() == TaskType.REQUESTWRITEFILE) {
 
 			// WorkMessage wm=SendWriteWorkMessage(msg);
 			// System.out.println("File replicated");

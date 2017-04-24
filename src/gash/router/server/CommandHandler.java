@@ -100,10 +100,8 @@ public class CommandHandler extends SimpleChannelInboundHandler<CommandMessage> 
 		}
 
 		if (msg.getReq().getRequestType() == TaskType.REQUESTREADFILE) {
-			// QueueHandler.enqueueInboundCommandAndChannel(msg,channel);
-		}
-
-		if (msg.getPing()) {
+			QueueHandler.enqueueInboundCommandAndChannel(msg,channel);
+		}else if (msg.getPing()) {
 			// System.out.println("Received ping from cluster 1");
 			if (!ServerState.isRoundTrip() && msg.getHeader().getDestination() == Constants.clusterId) {
 
