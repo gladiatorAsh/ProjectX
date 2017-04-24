@@ -96,7 +96,7 @@ public class DemoApp implements CommListener {
 	 */
 	public static void main(String[] args) {
 		String host = Constants.localhost;
-		//String host = "169.254.80.87";
+		// String host = "169.254.80.87";
 		int port = Constants.workPort;
 
 		Boolean affirm = true;
@@ -131,12 +131,18 @@ public class DemoApp implements CommListener {
 				System.out.println("Welcome to Gossamer Distributed");
 				System.out.println("Please choose an option to continue: ");
 
-				System.out.println("1. Write a file");
-				System.out.println("2. Read files");
-				System.out.println("3. Get File Names");
-				System.out.println("0. Exit");
+				System.out.println("[1] Write - Write a file to the cluster");
+				System.out.println("[2] Read  - Read file from cluster");
+				System.out.println("[3] Fetch - Fetch File Names stored in cluster");
+				System.out.println("[0] Exit  - Exit cluster");
 
-				option = reader.nextInt();
+				try {
+					option = reader.nextInt();
+				} catch (Exception e) {
+					option = 0;
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				// option = 2;
 				// reader.nextLine();
 				System.out.println("You entered " + option);
