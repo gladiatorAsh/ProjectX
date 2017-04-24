@@ -26,8 +26,9 @@ public class ServerState {
 	}
 
 	public static boolean roundTrip = false;
-	private static boolean stealReq=false;
-	private static int stealNode=0;
+	private static boolean stealReq = false;
+	private static int stealNode = 0;
+
 	public static boolean isStealReq() {
 		return stealReq;
 	}
@@ -35,8 +36,6 @@ public class ServerState {
 	public static void setStealReq(boolean s) {
 		stealReq = s;
 	}
-
-	
 
 	public static int getStealNode() {
 		return stealNode;
@@ -94,7 +93,7 @@ public class ServerState {
 	private Jedis jedisHandler2 = null;
 	private Jedis jedisHandler3 = null;
 	// private int nodeId=0;
-	private RoutingConf conf;
+	private static RoutingConf conf;
 	private static EdgeMonitor emon;
 	private TaskList tasks;
 	private boolean hasLeader = false;
@@ -129,12 +128,14 @@ public class ServerState {
 		 * }catch(Exception e){ e.printStackTrace(); }
 		 */
 	}
-	public void startAllThreads(){
+
+	public void startAllThreads() {
 		new Thread(new InboundCommandMessageQueueHandler()).start();
 		new Thread(new InboundWorkMessageQueueHandler()).start();
 		new Thread(new OutboundCommandMessageQueueHandler()).start();
 		new Thread(new OutboundWorkMessageQueueHandler()).start();
 	}
+
 	public void setRedis() {
 		// TODO Auto-generated method stub
 		try {
@@ -358,7 +359,7 @@ public class ServerState {
 
 	}
 
-	public RoutingConf getConf() {
+	public static RoutingConf getConf() {
 		return conf;
 	}
 

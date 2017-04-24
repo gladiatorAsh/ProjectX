@@ -19,6 +19,7 @@ public class Constants {
 
 	public static int redisPort = 6379;
 	public static int workPort = 4568;
+	public static int clientPort = 4569;
 	public static String localhost = "127.0.0.1";
 	public static String next = "169.254.214.175";
 }

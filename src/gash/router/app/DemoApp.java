@@ -256,7 +256,7 @@ public class DemoApp implements CommListener {
 
 			// Start the server.
 			System.out.println("Starting command server listening on port = " + 4568);
-			ChannelFuture f = b.bind(4568).syncUninterruptibly();
+			ChannelFuture f = b.bind(Constants.clientPort).syncUninterruptibly();
 
 			System.out.println(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
 					+ f.channel().isWritable() + ", act: " + f.channel().isActive());

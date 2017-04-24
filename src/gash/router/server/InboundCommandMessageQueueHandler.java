@@ -17,41 +17,72 @@ import gash.router.server.edges.EdgeMonitor;
 import global.Constants;
 import global.Utility;
 import io.netty.channel.Channel;
+import pipe.common.Common.Header;
+import pipe.common.Common.ReadBody;
+import pipe.common.Common.Request;
 import pipe.common.Common.TaskType;
+import pipe.election.Election.LeaderStatus;
+import pipe.election.Election.LeaderStatus.LeaderState;
 import pipe.work.Work.WorkMessage;
+import pipe.work.Work.WorkMessage.RequestType;
 import routing.Pipe.CommandMessage;
 
-public class InboundCommandMessageQueueHandler implements Runnable{
+public class InboundCommandMessageQueueHandler implements Runnable {
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		while(true){
-			CommandAndChannel cch=QueueHandler.dequeueInboundCommandAndChannel();
-			
-			CommandMessage msg=cch.getMsg();
-			Channel channel=cch.getChannel();
-			if(ServerState.isStealReq() &&  msg.getReq().getRequestType() == TaskType.REQUESTREADFILE){
-				//convert to command first
-				WorkMessage wmsg=convertStealToWork(channel.localAddress()+"",4568);
+		while (true) {
+			CommandAndChannel cch = QueueHandler.dequeueInboundCommandAndChannel();
+
+			CommandMessage msg = cch.getMsg();
+			Channel channel = cch.getChannel();
+			if (ServerState.isStealReq() && msg.getReq().getRequestType() == TaskType.REQUESTREADFILE) {
+				// convert to command first
+				WorkMessage wmsg = convertStealToWork(msg, channel.localAddress() + "", Constants.clientPort);
 				EdgeMonitor.sendToNode(wmsg, ServerState.getStealNode());
 				ServerState.setStealNode(0);
 				ServerState.setStealReq(false);
-			}else{
+			} else {
 				if (msg.getReq().getRrb().getFilename().equals("*")) {
-					//readFileNamesCmd(msg, channel);
+					// readFileNamesCmd(msg, channel);
 				} else {
 					readFileCmd(msg, channel);
 				}
 			}
-			
+
 		}
 	}
-	
-	private WorkMessage convertStealToWork(String localAddress, int i) {
+
+	private WorkMessage convertStealToWork(CommandMessage msg, String localAddress, int port) {
 		// TODO Auto-generated method stub
-		return null;
+
+		Header.Builder header = Header.newBuilder();
+		header.setNodeId(ServerState.getConf().getNodeId());
+		header.setTime(System.currentTimeMillis());
+		header.setDestination(-1);
+
+		ReadBody.Builder body = ReadBody.newBuilder();
+		body.setClientAddress(localAddress + ":" + port);
+
+		LeaderStatus.Builder leaderStatus = LeaderStatus.newBuilder();
+		leaderStatus.setState(LeaderState.LEADERKNOWN);
+
+		Request.Builder req = Request.newBuilder();
+		req.setRequestType(TaskType.REQUESTREADFILE);
+		req.setRrb(body);
+
+		WorkMessage.Builder wmsg = WorkMessage.newBuilder();
+		wmsg.setHeader(header);
+		// ToDO: Decide on a secret
+		wmsg.setSecret(1);
+		wmsg.setLeaderStatus(leaderStatus);
+		wmsg.setRequestType(RequestType.READFILE);
+		wmsg.setReq(req);
+
+		return wmsg.build();
 	}
+
 	private void readFileCmd(CommandMessage msg, Channel channel) {
 		// TODO Auto-generated method stub
 
@@ -94,8 +125,8 @@ public class InboundCommandMessageQueueHandler implements Runnable{
 				e.printStackTrace();
 			}
 			QueueHandler.enqueueOutboundCommandAndChannel(commMsg, channel);
-			//WriteChannel myCallable = new WriteChannel(commMsg, channel);
-			//futuresList.add(myCallable);
+			// WriteChannel myCallable = new WriteChannel(commMsg, channel);
+			// futuresList.add(myCallable);
 		}
 		mysql_db.closeConn();
 		try {
