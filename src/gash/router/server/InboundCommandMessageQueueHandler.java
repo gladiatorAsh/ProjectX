@@ -17,6 +17,7 @@ import gash.router.server.edges.EdgeMonitor;
 import global.Constants;
 import global.Utility;
 import io.netty.channel.Channel;
+import pipe.common.Common.TaskType;
 import pipe.work.Work.WorkMessage;
 import routing.Pipe.CommandMessage;
 
@@ -30,7 +31,7 @@ public class InboundCommandMessageQueueHandler implements Runnable{
 			
 			CommandMessage msg=cch.getMsg();
 			Channel channel=cch.getChannel();
-			if(ServerState.isStealReq()){
+			if(ServerState.isStealReq() &&  msg.getReq().getRequestType() == TaskType.REQUESTREADFILE){
 				//convert to command first
 				WorkMessage wmsg=convertStealToWork(channel.localAddress()+"",4568);
 				EdgeMonitor.sendToNode(wmsg, ServerState.getStealNode());
