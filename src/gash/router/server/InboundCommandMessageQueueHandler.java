@@ -64,7 +64,7 @@ public class InboundCommandMessageQueueHandler implements Runnable {
 
 		ReadBody.Builder body = ReadBody.newBuilder();
 		body.setClientAddress(msg.getReq().getRrb().getClientAddress());
-
+		body.setFilename(msg.getReq().getRrb().getFilename());
 		LeaderStatus.Builder leaderStatus = LeaderStatus.newBuilder();
 		leaderStatus.setState(LeaderState.LEADERKNOWN);
 
