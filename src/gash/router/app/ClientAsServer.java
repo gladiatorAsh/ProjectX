@@ -22,7 +22,7 @@ public class ClientAsServer implements Runnable{
 
 		try {
 			ServerBootstrap b = new ServerBootstrap();
-			bootstrap.put(4568, b);
+			bootstrap.put(Constants.clientPort, b);
 
 			b.group(bossGroup, workerGroup);
 			b.channel(NioServerSocketChannel.class);
@@ -35,7 +35,7 @@ public class ClientAsServer implements Runnable{
 			b.childHandler(new CommInit(false));
 
 			// Start the server.
-			System.out.println("Starting command server listening on port = " + 4568);
+			System.out.println("Starting command server listening on port = " + Constants.clientPort);
 			ChannelFuture f = b.bind(Constants.clientPort).syncUninterruptibly();
 
 			System.out.println(f.channel().localAddress() + " -> open: " + f.channel().isOpen() + ", write: "
