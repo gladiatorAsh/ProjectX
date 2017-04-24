@@ -137,6 +137,14 @@ public class DemoApp implements CommListener {
 			do {
 				int option = 0;
 				System.out.println("Welcome to Gossamer Distributed");
+				System.out.println("Please specify which id of cluster you want to connect to");
+				System.out.println("If u don't know this information, type 0");
+				int clusterId = reader.nextInt();
+
+				if (clusterId != 0) {
+					Constants.whomToConnect = clusterId;
+				}
+
 				System.out.println("Please choose an option to continue: ");
 
 				System.out.println("[1] Write - Write a file to the cluster");
@@ -283,7 +291,7 @@ public class DemoApp implements CommListener {
 
 		return command.build();
 	}
-	
+
 	private static void sendFile(File file, Channel channel) {
 		// TODO Auto-generated method stub
 
